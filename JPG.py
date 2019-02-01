@@ -3,7 +3,6 @@
 import os
 import re
 
-
 class folder():
 	def __init__(self,path):
 		self.path = path
@@ -46,8 +45,10 @@ class file():
 
 
 if __name__ == "__main__":
-	path = './pictures/'
-	folder = folder(path)
+	import sys
+	#path = './pictures/'
+	#folder = folder(path)
+	folder = folder(sys.argv[1])
 	path, filelist = folder.path, folder.filelist
 	markers = ['ffc','ffd','ffe','fff']
 	JPG = []

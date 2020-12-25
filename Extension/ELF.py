@@ -4,6 +4,7 @@ class ELF:
     def __init__(self, raw):
         self.raw        = raw
         self.endian     = 'little'
+        self.symtab     = b''
         self.APIs       = []
 
         self.parse()
@@ -11,6 +12,7 @@ class ELF:
 
     def parse(self):
         self.parseElfHeader()
+        self.parseSectionHeader()
 
 
     def parseElfHeader(self):
@@ -39,6 +41,25 @@ class ELF:
         self.e_shentsize = converter.bytes2int(elf_header[ 0x2E : 0x30 ], self.endian)
         self.e_shnum     = converter.bytes2int(elf_header[ 0x30 : 0x32 ], self.endian)
         self.e_shstrndx  = converter.bytes2int(elf_header[ 0x32 : ], self.endian)
+
+
+    def parseSectionHeader(self):
+        start = self.e_shoff
+        for i in range(self.e_shnum):
+            section_header = self.raw[ start : start + 0x28 ]
+            sh_name      = converter.bytes2int(section_header[ 0x00 : 0x04 ], self.endian)
+            sh_type      = converter.bytes2int(section_header[ 0x04 : 0x08 ], self.endian)
+            sh_flags     = converter.bytes2int(section_header[ 0x08 : 0x0C ], self.endian)
+            sh_addr      = converter.bytes2int(section_header[ 0x0C : 0x10 ], self.endian)
+            sh_offset    = converter.bytes2int(section_header[ 0x10 : 0x14 ], self.endian)
+            sh_size      = converter.bytes2int(section_header[ 0x14 : 0x18 ], self.endian)
+            sh_link      = converter.bytes2int(section_header[ 0x18 : 0x1C ], self.endian)
+            sh_info      = converter.bytes2int(section_header[ 0x1C : 0x20 ], self.endian)
+            sh_addralign = converter.bytes2int(section_header[ 0x20 : 0x24 ], self.endian)
+            sh_entsize   = converter.bytes2int(section_header[ 0x24 : 0x28 ], self.endian)
+
+            if sh_type == 2: self.symtab = self.raw[ sh_offset : sh_offset + sh_size ]
+            start += 0x28
 
 
 # http://www.skyfree.org/linux/references/ELF_Format.pdf

@@ -1,5 +1,5 @@
-from Extension.AR   import *
-from Extension.ELF  import *
+from Type.AR   import *
+from Type.ELF  import *
 
 
 class PARSER:

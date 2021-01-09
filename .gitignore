@@ -1,5 +1,6 @@
 __pycache__
 
 TestCases/
+*.txt
 
 .DS_Store

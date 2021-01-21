@@ -80,7 +80,9 @@ class ELF:
             sym_other   = symtab[ 0xD : 0xE ]
             sym_shndx   = symtab[ 0xE : ]
             
-            if sym_info == 0x2: 
+            # (sym_info == 0x02) == [ STB_LOCAL | STT_FUNC ]
+            # (sym_info == 0x12) == [ STB_GLOBAL | STT_FUNC ]
+            if sym_info & 0xF == 0x2: 
                 try: self.APIs.append(self.strtab[ sym_name : ].split(b'\x00')[0].decode('utf-8'))
                 except: continue
 

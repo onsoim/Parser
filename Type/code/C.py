@@ -13,7 +13,13 @@ class C(__BASE__):
 
 
     def getElements(self, prototype):
-        raw     = prototype.split('(')[0].split(' ')
+        raw = list(
+            filter(
+                None,
+                prototype.split('(')[0].split(' ')
+            )
+        )
+        
         if raw[-1][0] == '*':
             raw[-1] = raw[-1][ 1 : ]
             raw.insert(-1, '*')

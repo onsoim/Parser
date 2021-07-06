@@ -1,5 +1,5 @@
-from Type.AR   import *
-from Type.ELF  import *
+from Type.file.AR   import *
+from Type.file.ELF  import *
 
 
 class PARSER:

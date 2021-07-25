@@ -12,6 +12,17 @@ class C(__BASE__):
         return [re.sub(r'\n( )+', ' ', i[0]) for i in (compiler.findall(self.code))]
 
 
+    def isFuncExist(self, funcName):
+        compiler = re.compile(
+            f'{funcName}\(',
+            re.MULTILINE
+        )
+
+        if len(compiler.findall(self.code)):
+            return True
+        return False
+
+
     def getElements(self, prototype):
         raw = list(
             filter(

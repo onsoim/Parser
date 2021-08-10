@@ -23,6 +23,40 @@ class C(__BASE__):
         return False
 
 
+    def getFuncByLine(self, funcName):
+        usages = []
+        index = 0
+
+        for line in self.code.split('\n'):
+            index += 1
+            if f'{funcName}' in line:
+                params = line.split('(')[1].split(')')[0]
+                if '"' in params:
+                    usages.append(
+                        {
+                            'line number': index,
+                            'funcName': funcName,
+                            'params': params
+                        }
+                    )
+
+        return usages
+
+
+    # Todo parsing multiline function usage using regex
+    def getFuncByCode(self, funcName):
+        usages = []
+        index = 0
+
+        compiler = re.compile(
+            f'{funcName}\(([^)]+)',
+            re.MULTILINE
+        )
+        print(compiler.sub(self.code))
+
+        return usages
+
+
     def getElements(self, prototype):
         raw = list(
             filter(
